@@ -1,14 +1,12 @@
-import os
-
 from sentence_transformers import CrossEncoder
 
 from core.application.interfaces import RerankerService
+from core.infrastructure.runtime.model_registry import ModelRegistry
 
 
 class CrossEncoderReranker(RerankerService):
-    def __init__(self, model_name: str | None = None):
-        model = model_name or os.getenv("RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2")
-        self.model = CrossEncoder(model)
+    def __init__(self, model: CrossEncoder | None = None):
+        self.model = model or ModelRegistry.get_reranker()
 
     def rerank(self, query: str, results: list, top_k: int):
         if not results:

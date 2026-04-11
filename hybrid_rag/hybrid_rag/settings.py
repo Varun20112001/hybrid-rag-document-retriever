@@ -119,8 +119,57 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/1")
+CELERY_WORKER_PREFETCH_MULTIPLIER = int(os.getenv("CELERY_WORKER_PREFETCH_MULTIPLIER", "1"))
+CELERY_TASK_ACKS_LATE = True
+_max_tasks_per_child = int(os.getenv("CELERYD_MAX_TASKS_PER_CHILD", "0"))
+CELERYD_MAX_TASKS_PER_CHILD = _max_tasks_per_child if _max_tasks_per_child > 0 else None
 
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "120"))
 MMR_LAMBDA = float(os.getenv("MMR_LAMBDA", "0.5"))
 RRF_K = int(os.getenv("RRF_K", "60"))
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2")
+EMBED_BATCH_SIZE = int(os.getenv("EMBED_BATCH_SIZE", "32"))
+EMBED_NORMALIZE = os.getenv("EMBED_NORMALIZE", "1") == "1"
+EMBED_SHOW_PROGRESS_BAR = os.getenv("EMBED_SHOW_PROGRESS_BAR", "0") == "1"
+EMBED_DEVICE = os.getenv("EMBED_DEVICE")
+EMBED_MAX_SEQ_LENGTH = int(os.getenv("EMBED_MAX_SEQ_LENGTH", "512"))
+
+HF_HOME = os.getenv("HF_HOME")
+TRANSFORMERS_CACHE = os.getenv("TRANSFORMERS_CACHE")
+SENTENCE_TRANSFORMERS_HOME = os.getenv("SENTENCE_TRANSFORMERS_HOME")
+HF_HUB_OFFLINE = os.getenv("HF_HUB_OFFLINE", "0") == "1"
+
+if HF_HOME:
+    os.environ.setdefault("HF_HOME", HF_HOME)
+if TRANSFORMERS_CACHE:
+    os.environ.setdefault("TRANSFORMERS_CACHE", TRANSFORMERS_CACHE)
+if SENTENCE_TRANSFORMERS_HOME:
+    os.environ.setdefault("SENTENCE_TRANSFORMERS_HOME", SENTENCE_TRANSFORMERS_HOME)
+os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+if HF_HUB_OFFLINE:
+    os.environ.setdefault("HF_HUB_OFFLINE", "1")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s %(levelname)s [%(name)s] %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "celery": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "sentence_transformers": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        "transformers": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        "huggingface_hub": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        "httpx": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+    },
+}

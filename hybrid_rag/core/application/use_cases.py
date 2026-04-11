@@ -1,4 +1,5 @@
 from dataclasses import asdict
+import time
 from uuid import UUID
 from uuid import uuid4
 
@@ -74,6 +75,7 @@ class ProcessDocumentUseCase:
         self.embedding_service = embedding_service
 
     def execute(self, document_id):
+        started = time.perf_counter()
         if isinstance(document_id, str):
             document_id = UUID(document_id)
         document = self.document_repo.get(document_id)
@@ -85,7 +87,9 @@ class ProcessDocumentUseCase:
         try:
             text = self.extractor.extract(document.storage_path)
             chunks = self.chunker.split(text, source=document.filename)
+            embed_started = time.perf_counter()
             vectors = self.embedding_service.embed([c["text"] for c in chunks]) if chunks else []
+            embed_seconds = time.perf_counter() - embed_started
 
             mapped = []
             for idx, (chunk, vector) in enumerate(zip(chunks, vectors)):
@@ -104,6 +108,12 @@ class ProcessDocumentUseCase:
             self.chunk_repo.clear_for_document(document.id)
             self.chunk_repo.bulk_create(mapped)
             self.document_repo.update_status(document.id, DocumentStatus.COMPLETED.value)
+            total_seconds = time.perf_counter() - started
+            return {
+                "chunk_count": len(mapped),
+                "embed_seconds": embed_seconds,
+                "total_seconds": total_seconds,
+            }
         except Exception as exc:  # noqa: BLE001
             self.document_repo.update_status(document.id, DocumentStatus.FAILED.value, str(exc))
             raise

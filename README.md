@@ -61,6 +61,12 @@ uv run python manage.py runserver
 uv run celery -A hybrid_rag worker --pool=solo -l info
 ```
 
+7. Optional: warm model cache before worker start:
+
+```bash
+uv run python manage.py warm_models
+```
+
 ## APIs
 
 - `POST /api/v1/documents/upload` (multipart form-data: `file`)
@@ -93,3 +99,29 @@ Search payload:
 - Move background processing observability to OpenTelemetry.
 - Add HNSW and adaptive ANN tuning for larger corpora.
 
+## Celery and Model Runtime Notes
+
+- Models are loaded once per worker process using a process-level `ModelRegistry`.
+- Worker process warmup is triggered on Celery `worker_process_init`.
+- Recommended worker flags for long tasks:
+
+```bash
+uv run celery -A hybrid_rag worker --pool=solo -l info --prefetch-multiplier=1
+```
+
+- Optional isolation in memory-constrained setups:
+
+```bash
+uv run celery -A hybrid_rag worker --pool=solo -l info --prefetch-multiplier=1 --max-tasks-per-child=20
+```
+
+## Troubleshooting Log Patterns
+
+- Benign in most cases:
+  - Hugging Face `307` redirects.
+  - `404` for optional files like `processor_config.json` or `adapter_config.json`.
+  - `embeddings.position_ids | UNEXPECTED` during model load.
+- Needs action:
+  - repeated task retries with final `FAILED` status in `processing_runs`.
+  - network errors with empty model cache while `HF_HUB_OFFLINE=1`.
+  - parse errors for unsupported or corrupted files.
