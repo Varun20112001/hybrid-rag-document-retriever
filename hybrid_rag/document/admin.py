@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import DocumentChunkModel, DocumentModel, ProcessingRunModel
+
+admin.site.register(DocumentModel)
+admin.site.register(DocumentChunkModel)
+admin.site.register(ProcessingRunModel)
