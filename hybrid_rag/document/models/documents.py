@@ -4,7 +4,7 @@ import uuid
 class DocumentModel(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, 
-        editable=False, db_column="doc_id",
+        editable=False,
         db_comment="Unique identifier for the document"
     )
 
