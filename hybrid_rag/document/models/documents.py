@@ -47,7 +47,12 @@ class DocumentModel(models.Model):
         auto_now=True, db_comment="Timestamp when the document was last updated", 
         db_column="updated_at"
     )
+    
 
+    def __str__(self):
+        return self.filename
+    
+    
     class Meta:
         db_table = "documents"
         verbose_name = "Document"
