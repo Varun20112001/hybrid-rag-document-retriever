@@ -84,6 +84,20 @@ Search payload:
 }
 ```
 
+## Architecture Diagrams
+
+### Ingestion Pipeline
+
+![Ingestion Pipeline](docs/diagrams/ingestion-pipeline.svg)
+
+The ingestion path starts at the upload API, persists the raw file and a `PENDING` document row, then hands work to Celery. The worker extracts text, splits it into chunks, generates embeddings, stores chunk text plus metadata in PostgreSQL/pgvector, and finally records completion metrics.
+
+### Retrieval Pipeline
+
+![Retrieval Pipeline](docs/diagrams/retrieval-pipeline.svg)
+
+The retrieval path combines two ranking strategies in parallel: lexical search through PostgreSQL full-text search plus BM25 scoring, and semantic search through cosine similarity over embeddings. Semantic candidates are diversified with MMR, merged with lexical rankings using RRF, reranked with a cross-encoder, and returned with snippets and score breakdowns.
+
 ## Design Decisions and Tradeoffs
 
 - Chose PostgreSQL FTS + pgvector to keep single-database architecture.
@@ -114,4 +128,3 @@ uv run celery -A hybrid_rag worker --pool=solo -l info --prefetch-multiplier=1
 ```bash
 uv run celery -A hybrid_rag worker --pool=solo -l info --prefetch-multiplier=1 --max-tasks-per-child=20
 ```
-

@@ -1,0 +1,67 @@
+<svg width="1400" height="760" viewBox="0 0 1400 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="760" fill="#F6F4EC"/>
+  <rect x="48" y="48" width="1304" height="664" rx="28" fill="#FFFDF7" stroke="#1F2937" stroke-width="3"/>
+  <text x="82" y="106" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Document Ingestion Pipeline</text>
+  <text x="82" y="140" fill="#4B5563" font-family="Segoe UI, Arial, sans-serif" font-size="18">Upload, async processing, extraction, chunking, embeddings, and persistence.</text>
+
+  <rect x="84" y="190" width="210" height="92" rx="18" fill="#DCEBFF" stroke="#1D4ED8" stroke-width="3"/>
+  <text x="189" y="228" text-anchor="middle" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">Client</text>
+  <text x="189" y="256" text-anchor="middle" fill="#1E3A8A" font-family="Segoe UI, Arial, sans-serif" font-size="16">PDF / DOCX / TXT / MD</text>
+
+  <rect x="342" y="190" width="250" height="92" rx="18" fill="#EAFBE7" stroke="#15803D" stroke-width="3"/>
+  <text x="467" y="224" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Upload API</text>
+  <text x="467" y="252" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">save file + create document row</text>
+  <text x="467" y="273" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">status = PENDING</text>
+
+  <rect x="646" y="190" width="220" height="92" rx="18" fill="#FEF3C7" stroke="#B45309" stroke-width="3"/>
+  <text x="756" y="225" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Celery Queue</text>
+  <text x="756" y="253" text-anchor="middle" fill="#92400E" font-family="Segoe UI, Arial, sans-serif" font-size="16">enqueue process task</text>
+
+  <rect x="920" y="190" width="260" height="92" rx="18" fill="#FCE7F3" stroke="#BE185D" stroke-width="3"/>
+  <text x="1050" y="224" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Celery Worker</text>
+  <text x="1050" y="252" text-anchor="middle" fill="#9D174D" font-family="Segoe UI, Arial, sans-serif" font-size="16">warm models once per process</text>
+  <text x="1050" y="273" text-anchor="middle" fill="#9D174D" font-family="Segoe UI, Arial, sans-serif" font-size="16">status = PROCESSING</text>
+
+  <rect x="110" y="368" width="220" height="92" rx="18" fill="#F3E8FF" stroke="#7E22CE" stroke-width="3"/>
+  <text x="220" y="401" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Text Extractor</text>
+  <text x="220" y="428" text-anchor="middle" fill="#6B21A8" font-family="Segoe UI, Arial, sans-serif" font-size="16">PyPDF / python-docx</text>
+
+  <rect x="386" y="368" width="240" height="92" rx="18" fill="#E0F2FE" stroke="#0369A1" stroke-width="3"/>
+  <text x="506" y="401" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Chunker</text>
+  <text x="506" y="428" text-anchor="middle" fill="#075985" font-family="Segoe UI, Arial, sans-serif" font-size="16">RecursiveCharacterTextSplitter</text>
+
+  <rect x="686" y="368" width="258" height="92" rx="18" fill="#FFE4E6" stroke="#BE123C" stroke-width="3"/>
+  <text x="815" y="398" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Embedding Service</text>
+  <text x="815" y="426" text-anchor="middle" fill="#9F1239" font-family="Segoe UI, Arial, sans-serif" font-size="16">SentenceTransformer</text>
+  <text x="815" y="447" text-anchor="middle" fill="#9F1239" font-family="Segoe UI, Arial, sans-serif" font-size="16">batch encode chunks</text>
+
+  <rect x="994" y="350" width="278" height="130" rx="18" fill="#ECFCCB" stroke="#4D7C0F" stroke-width="3"/>
+  <text x="1133" y="385" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">PostgreSQL + pgvector</text>
+  <text x="1133" y="413" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">documents table</text>
+  <text x="1133" y="434" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">document_chunks table</text>
+  <text x="1133" y="455" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">tsvector + embedding + metadata</text>
+
+  <rect x="496" y="548" width="390" height="92" rx="18" fill="#DCFCE7" stroke="#15803D" stroke-width="3"/>
+  <text x="691" y="581" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Completion / Observability</text>
+  <text x="691" y="609" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">update status = COMPLETED or FAILED</text>
+  <text x="691" y="630" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">store chunk_count, embed_seconds, total_seconds</text>
+
+  <path d="M294 236H342" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M592 236H646" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M866 236H920" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1050 282V325" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1050 325H220V368" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M330 414H386" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M626 414H686" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M944 414H994" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1133 480V522H691V548" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <polygon points="342,236 330,229 330,243" fill="#374151"/>
+  <polygon points="646,236 634,229 634,243" fill="#374151"/>
+  <polygon points="920,236 908,229 908,243" fill="#374151"/>
+  <polygon points="220,368 213,356 227,356" fill="#374151"/>
+  <polygon points="386,414 374,407 374,421" fill="#374151"/>
+  <polygon points="686,414 674,407 674,421" fill="#374151"/>
+  <polygon points="994,414 982,407 982,421" fill="#374151"/>
+  <polygon points="691,548 684,536 698,536" fill="#374151"/>
+</svg>

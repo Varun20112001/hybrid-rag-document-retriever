@@ -1,0 +1,83 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="820" fill="#F5F7FB"/>
+  <rect x="48" y="48" width="1304" height="724" rx="28" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+  <text x="82" y="106" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Retrieval Pipeline</text>
+  <text x="82" y="140" fill="#4B5563" font-family="Segoe UI, Arial, sans-serif" font-size="18">Keyword, semantic, fusion, reranking, and final response assembly.</text>
+
+  <rect x="90" y="186" width="220" height="96" rx="18" fill="#DCEBFF" stroke="#1D4ED8" stroke-width="3"/>
+  <text x="200" y="223" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Search API</text>
+  <text x="200" y="251" text-anchor="middle" fill="#1E3A8A" font-family="Segoe UI, Arial, sans-serif" font-size="16">query + mode + top_k</text>
+
+  <rect x="368" y="186" width="255" height="96" rx="18" fill="#EAFBE7" stroke="#15803D" stroke-width="3"/>
+  <text x="495" y="220" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Search Use Case</text>
+  <text x="495" y="248" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">orchestrates retrieval pipeline</text>
+  <text x="495" y="269" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">keyword / semantic / hybrid</text>
+
+  <rect x="682" y="186" width="256" height="96" rx="18" fill="#F3E8FF" stroke="#7E22CE" stroke-width="3"/>
+  <text x="810" y="220" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Embedding Service</text>
+  <text x="810" y="248" text-anchor="middle" fill="#6B21A8" font-family="Segoe UI, Arial, sans-serif" font-size="16">query embedding</text>
+  <text x="810" y="269" text-anchor="middle" fill="#6B21A8" font-family="Segoe UI, Arial, sans-serif" font-size="16">model reused from registry</text>
+
+  <rect x="1000" y="168" width="270" height="130" rx="18" fill="#ECFCCB" stroke="#4D7C0F" stroke-width="3"/>
+  <text x="1135" y="205" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">PostgreSQL + pgvector</text>
+  <text x="1135" y="233" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">document_chunks</text>
+  <text x="1135" y="254" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">GIN tsvector index</text>
+  <text x="1135" y="275" text-anchor="middle" fill="#3F6212" font-family="Segoe UI, Arial, sans-serif" font-size="16">IVFFlat vector index</text>
+
+  <rect x="136" y="392" width="250" height="110" rx="18" fill="#FEF3C7" stroke="#B45309" stroke-width="3"/>
+  <text x="261" y="426" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Lexical Retrieval</text>
+  <text x="261" y="454" text-anchor="middle" fill="#92400E" font-family="Segoe UI, Arial, sans-serif" font-size="16">PostgreSQL FTS</text>
+  <text x="261" y="475" text-anchor="middle" fill="#92400E" font-family="Segoe UI, Arial, sans-serif" font-size="16">rank lexical candidates with BM25</text>
+
+  <rect x="448" y="392" width="250" height="110" rx="18" fill="#FFE4E6" stroke="#BE123C" stroke-width="3"/>
+  <text x="573" y="426" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Semantic Retrieval</text>
+  <text x="573" y="454" text-anchor="middle" fill="#9F1239" font-family="Segoe UI, Arial, sans-serif" font-size="16">cosine similarity over vectors</text>
+  <text x="573" y="475" text-anchor="middle" fill="#9F1239" font-family="Segoe UI, Arial, sans-serif" font-size="16">top-N semantic candidates</text>
+
+  <rect x="760" y="392" width="200" height="110" rx="18" fill="#E0F2FE" stroke="#0369A1" stroke-width="3"/>
+  <text x="860" y="426" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">MMR</text>
+  <text x="860" y="454" text-anchor="middle" fill="#075985" font-family="Segoe UI, Arial, sans-serif" font-size="16">diversify semantic</text>
+  <text x="860" y="475" text-anchor="middle" fill="#075985" font-family="Segoe UI, Arial, sans-serif" font-size="16">candidate set</text>
+
+  <rect x="1022" y="392" width="210" height="110" rx="18" fill="#FCE7F3" stroke="#BE185D" stroke-width="3"/>
+  <text x="1127" y="426" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">RRF Fusion</text>
+  <text x="1127" y="454" text-anchor="middle" fill="#9D174D" font-family="Segoe UI, Arial, sans-serif" font-size="16">merge lexical +</text>
+  <text x="1127" y="475" text-anchor="middle" fill="#9D174D" font-family="Segoe UI, Arial, sans-serif" font-size="16">semantic rankings</text>
+
+  <rect x="380" y="606" width="280" height="110" rx="18" fill="#E9D5FF" stroke="#7C3AED" stroke-width="3"/>
+  <text x="520" y="640" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Cross-Encoder Reranker</text>
+  <text x="520" y="668" text-anchor="middle" fill="#6D28D9" font-family="Segoe UI, Arial, sans-serif" font-size="16">score fused shortlist</text>
+  <text x="520" y="689" text-anchor="middle" fill="#6D28D9" font-family="Segoe UI, Arial, sans-serif" font-size="16">improve final relevance ordering</text>
+
+  <rect x="742" y="606" width="280" height="110" rx="18" fill="#DCFCE7" stroke="#15803D" stroke-width="3"/>
+  <text x="882" y="640" text-anchor="middle" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700">Response Builder</text>
+  <text x="882" y="668" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">chunk ids + snippets + metadata</text>
+  <text x="882" y="689" text-anchor="middle" fill="#166534" font-family="Segoe UI, Arial, sans-serif" font-size="16">bm25 / vector / rrf / rerank scores</text>
+
+  <path d="M310 234H368" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M623 234H682" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M938 234H1000" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+
+  <path d="M495 282V338H261V392" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M810 282V338H573V392" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1135 298V338H860V392" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1135 298V338H1127V392" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M698 447H760" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+  <path d="M960 447H1022" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+
+  <path d="M1127 502V554H520V606" stroke="#374151" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M660 661H742" stroke="#374151" stroke-width="4" stroke-linecap="round"/>
+
+  <polygon points="368,234 356,227 356,241" fill="#374151"/>
+  <polygon points="682,234 670,227 670,241" fill="#374151"/>
+  <polygon points="1000,234 988,227 988,241" fill="#374151"/>
+  <polygon points="261,392 254,380 268,380" fill="#374151"/>
+  <polygon points="573,392 566,380 580,380" fill="#374151"/>
+  <polygon points="860,392 853,380 867,380" fill="#374151"/>
+  <polygon points="1127,392 1120,380 1134,380" fill="#374151"/>
+  <polygon points="760,447 748,440 748,454" fill="#374151"/>
+  <polygon points="1022,447 1010,440 1010,454" fill="#374151"/>
+  <polygon points="520,606 513,594 527,594" fill="#374151"/>
+  <polygon points="742,661 730,654 730,668" fill="#374151"/>
+</svg>
