@@ -52,19 +52,19 @@ python manage.py migrate
 5. Run API server:
 
 ```bash
-uv run python manage.py runserver
+python manage.py runserver
 ```
 
 6. Run Celery worker (new terminal, from `hybrid_rag`):
 
 ```bash
-uv run celery -A hybrid_rag worker --pool=solo -l info
+celery -A hybrid_rag worker --pool=solo -l info
 ```
 
 7. Optional: warm model cache before worker start:
 
 ```bash
-uv run python manage.py warm_models
+python manage.py warm_models
 ```
 
 ## APIs
