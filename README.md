@@ -100,7 +100,7 @@ The retrieval path combines two ranking strategies in parallel: lexical search t
 
 ## Demo Video
 
-Watch or download the demo here: [demo.mp4](docs/demo/demo.mp4)
+Watch the demo here: [Hybrid RAG Demo Video](https://drive.google.com/file/d/1mQ0M9v9fe0LpyMMpttNNSnB_udF3QYs_/view?usp=sharing)
 
 This video walks through the upload flow, asynchronous ingestion, and hybrid search behavior end to end.
 
