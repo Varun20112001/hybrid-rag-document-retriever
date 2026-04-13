@@ -18,13 +18,32 @@ def _is_recoverable_error(exc: Exception) -> bool:
 
 @shared_task(bind=True, max_retries=3)
 def process_document_task(self, document_id: str):
+    logger.info(
+        "ingestion_task_received task_id=%s document_id=%s retry=%s max_retries=%s",
+        self.request.id,
+        document_id,
+        self.request.retries,
+        self.max_retries,
+    )
     run = ProcessingRunModel.objects.create(
         document_id=document_id,
         task_id=self.request.id,
         status=ProcessingRunModel.STATUS_STARTED,
         retries=self.request.retries,
     )
+    logger.info(
+        "ingestion_run_created task_id=%s document_id=%s run_id=%s status=%s",
+        self.request.id,
+        document_id,
+        run.id,
+        run.status,
+    )
     use_case = build_process_use_case()
+    logger.info(
+        "ingestion_processing_started task_id=%s document_id=%s",
+        self.request.id,
+        document_id,
+    )
     try:
         metrics = use_case.execute(document_id)
         run.status = ProcessingRunModel.STATUS_FINISHED
@@ -43,9 +62,10 @@ def process_document_task(self, document_id: str):
             ]
         )
         logger.info(
-            "task_metrics task_id=%s document_id=%s chunk_count=%s embed_seconds=%.3f total_seconds=%.3f",
+            "ingestion_processing_completed task_id=%s document_id=%s run_id=%s chunk_count=%s embed_seconds=%.3f total_seconds=%.3f",
             self.request.id,
             document_id,
+            run.id,
             run.chunk_count,
             run.embed_seconds,
             run.total_seconds,
@@ -58,10 +78,12 @@ def process_document_task(self, document_id: str):
             run.status = ProcessingRunModel.STATUS_RETRY
             run.save(update_fields=["status", "retries", "failure_reason", "updated_at"])
             logger.warning(
-                "recoverable_error task_id=%s document_id=%s retry=%s reason=%s",
+                "ingestion_processing_retry task_id=%s document_id=%s run_id=%s retry=%s countdown=%s reason=%s",
                 self.request.id,
                 document_id,
+                run.id,
                 self.request.retries + 1,
+                2 ** (self.request.retries + 1),
                 exc,
             )
             raise self.retry(exc=exc, countdown=2 ** (self.request.retries + 1))
@@ -72,9 +94,10 @@ def process_document_task(self, document_id: str):
             update_fields=["status", "retries", "failure_reason", "finished_at", "updated_at"]
         )
         logger.exception(
-            "non_recoverable_error task_id=%s document_id=%s retries=%s",
+            "ingestion_processing_failed task_id=%s document_id=%s run_id=%s retries=%s",
             self.request.id,
             document_id,
+            run.id,
             self.request.retries,
         )
         raise
