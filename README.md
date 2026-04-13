@@ -98,6 +98,12 @@ The ingestion path starts at the upload API, persists the raw file and a `PENDIN
 
 The retrieval path combines two ranking strategies in parallel: lexical search through PostgreSQL full-text search plus BM25 scoring, and semantic search through cosine similarity over embeddings. Semantic candidates are diversified with MMR, merged with lexical rankings using RRF, reranked with a cross-encoder, and returned with snippets and score breakdowns.
 
+## Demo Video
+
+Watch or download the demo here: [demo.mp4](docs/demo/demo.mp4)
+
+This video walks through the upload flow, asynchronous ingestion, and hybrid search behavior end to end.
+
 ## Design Decisions and Tradeoffs
 
 - Chose PostgreSQL FTS + pgvector to keep single-database architecture.
